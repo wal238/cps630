@@ -1,7 +1,8 @@
 import { useDrop } from "react-dnd";
 import React from "react";
+import { useGameState } from "../GameStateContext";
 
-const Cell = ({ onDrop, cellId, isShipPart, board, draggedShip }) => {
+const Cell = ({ onDrop, cellId, draggedShip }) => {
   const [{ isOver, canDrop }, drop] = useDrop({
     accept: "ship",
     drop: (item, monitor) => {
@@ -13,15 +14,31 @@ const Cell = ({ onDrop, cellId, isShipPart, board, draggedShip }) => {
     }),
   });
 
+  const { board } = useGameState();
+
+  const [x, y] = cellId.split('-').map(Number);
+  const cellValue = board[x][y];
+  const isShipPart = cellValue !== null && cellValue !== 'hit' && cellValue !== 'miss';
+
+  // Determine cell color based on its status
+  let cellColor = "lightblue";
+  if (isShipPart) {
+    cellColor = "green"; // Ship part
+  } else if (cellValue === 'hit') {
+    cellColor = "red"; // Hit
+  } else if (cellValue === 'miss') {
+    cellColor = "gray"; // Miss
+  } else if (isOver) {
+    cellColor = "yellow"; // Hovering over
+  }
 
   const cellStyle = {
-    width: 50,
-    height: 50,
+    width: 40,
+    height: 40,
     border: "1px solid black",
-    backgroundColor: isShipPart ? "green" : (isOver ? "yellow" : "lightblue"),
+    backgroundColor: cellColor,
     position: "relative",
   };
-
 
   return (
     <div ref={drop} style={cellStyle}>

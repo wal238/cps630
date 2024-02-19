@@ -8,9 +8,11 @@ const Button = ({ text, onClick }) => {
 
     const handleStartGame = () => {
         if (allShipPlaced) {
+            console.log("GAME HAS STARTED!")
             setAlertMessage("GAME HAS STARTED!");
             startGame();
         } else {
+            console.log("Please place all ships before starting the game")
             setAlertMessage("Please place all ships before starting the game");
         }
     }
@@ -20,7 +22,7 @@ const Button = ({ text, onClick }) => {
     return (
         <>
         <button
-            onClick={onClick}
+            onClick={handleStartGame}
             style={{
                 padding: 10,
                 fontSize: 20,

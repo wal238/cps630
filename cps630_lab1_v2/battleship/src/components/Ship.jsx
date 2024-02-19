@@ -10,25 +10,27 @@ const Ship = ({ id, size, orientation, rotateShip, placed }) => {
     }),
   });
 
+  const width = orientation === 'horizontal' ? size * 40 : 40;
+  const height = orientation === 'horizontal' ? 40 : size * 40;
+
   return (
+    <div className="relative">
     <div
       ref={drag}
       onClick={() => rotateShip(id)}
       style={{
         opacity: isDragging ? 0.5 : 1,
-        width: orientation === 'horizontal' ? size * 50 : 50,
-        height: orientation === 'horizontal' ? 50 : size * 50,
-        display: 'flex',
-        justifyContent: 'center',
-        alignItems: 'center',
-        fontSize: 25,
-        fontWeight: 'bold',
+        width: width,
+        height: height,
         cursor: 'move',
         backgroundColor: 'green',
+        border: '1px solid black',
       }}
+      className="flex justify-center items-center font-bold text-2xl"
     >
-      🚢 
+      🚢
     </div>
+  </div>
   );
 };
 

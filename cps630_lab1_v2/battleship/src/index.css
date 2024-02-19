@@ -1,4 +1,6 @@
-
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
 
 body {
   margin: 0;
@@ -14,3 +16,5 @@ code {
     monospace;
 }
 
+.w-25 { width: 25px; }
+.h-25 { height: 25px; }
