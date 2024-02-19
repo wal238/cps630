@@ -1,0 +1,24 @@
+.board {
+    display: grid;
+    grid-template-columns: repeat(10, 1fr);
+    grid-template-rows: repeat(10, 1fr);
+    gap: 1px;
+    width: 500px;
+    height: 500px;
+    background: #333;
+  }
+  
+  .cell {
+    background: #fff;
+    border-radius: 2px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 0.8rem;
+    color: #333;
+    cursor: pointer;
+  }
+  
+  .cell:hover {
+    background: #ddd;
+  }
