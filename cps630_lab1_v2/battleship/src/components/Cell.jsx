@@ -22,7 +22,6 @@ const Cell = ({ onDrop, cellId, isShipPart, board, draggedShip }) => {
     position: "relative",
   };
 
-  console.log(canDrop);
 
   return (
     <div ref={drop} style={cellStyle}>

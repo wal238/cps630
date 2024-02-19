@@ -1,0 +1,40 @@
+
+
+  /* Basic styles for the board */
+.board {
+    display: grid;
+    grid-template-columns: repeat(10, 50px); /* 10 columns, each 30px wide */
+    grid-template-rows: repeat(10, 50px); /* 10 rows, each 30px high */
+    gap: 1px; /* Space between cells */
+  }
+  
+  /* Styling for each cell */
+  .cell {
+    width: 50px;
+    height: 50px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: lightblue;
+    border: 1px solid #000;
+    cursor: pointer; /* Change cursor to indicate clickable */
+  }
+  
+  /* Styles for hit and miss */
+  .hit {
+    background-color: red;
+  }
+  
+  .miss {
+    background-color: lightgray;
+  }
+  
+  /* Optional: Styles for hover effect */
+  .cell:hover {
+    background-color: lightblue;
+  }
+  
+  /* If you have a specific class for cells containing ships (hidden from player) */
+  .ship {
+    background-color: navy; 
+  }  

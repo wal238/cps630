@@ -1,0 +1,23 @@
+/* App.css */
+
+/* Styles for the main container */
+.app-container {
+    display: flex;
+    justify-content: center;
+    align-items: start;
+    gap: 20px; /* Space between the two boards */
+    padding: 20px;
+  }
+  
+  /* Styling for the boards to ensure they don't grow or shrink */
+  .board-container {
+    flex: 0 0 auto;
+  }
+  
+  /* Additional styles */
+  h1 {
+    text-align: center;
+  }
+  
+  /* Your existing styles... */
+  
