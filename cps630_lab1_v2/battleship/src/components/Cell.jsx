@@ -33,8 +33,8 @@ const Cell = ({ onDrop, cellId, draggedShip }) => {
   }
 
   const cellStyle = {
-    width: 40,
-    height: 40,
+    width: 32,
+    height: 32,
     border: "1px solid black",
     backgroundColor: cellColor,
     position: "relative",

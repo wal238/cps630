@@ -181,7 +181,7 @@ const PCBoard = () => {
             return (
               <div
                 key={`${rowIndex}-${colIndex}`}
-                className={`h-10 w-10 cursor-pointer border border-black ${cellColorClass}`}
+                className={`h-8 w-8 cursor-pointer border border-black ${cellColorClass}`}
                 onClick={() => handleCellClick(rowIndex, colIndex)}
                 // Removed inline style to use Tailwind classes
               ></div>

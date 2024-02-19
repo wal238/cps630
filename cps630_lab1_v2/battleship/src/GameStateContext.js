@@ -139,7 +139,6 @@ export const GameStateProvider = ({ children }) => {
 
     setBoard([...board]);
     setIsPcBoardDisabled(false);
-    setAlertMessage("Your turn!");
   };
 
   const value = {

@@ -98,42 +98,50 @@ const Board = () => {
 
 
   return (
+    <>
     <DndProvider backend={HTML5Backend}>
-  <div className="flex flex-col items-center justify-center">
-    <h1 className="text-2xl font-bold text-center mb-4">Player</h1>
-    <div className="grid grid-cols-10">
-      {board.flat().map((cell, i) => {
-        const x = Math.floor(i / 10);
-        const y = i % 10;
-        return (
-          <Cell
-            key={i}
-            cellId={`${x}-${y}`}
-            onDrop={placeShip}
-            isShipPart={cell !== null}
-            draggedShip={draggedShip}
-            board={board}
+  <div className="flex flex-row justify-center items-start">
+    {/* Container for Ships */}
+    <div className="flex flex-col mr-4">
+      <h1 className="text-2xl font-bold text-center mb-4">Ships</h1>
+      <div className="flex flex-col items-start justify-start">
+        {ships.map((ship) => (
+          <Ship
+            key={ship.id}
+            id={ship.id}
+            size={ship.size}
+            orientation={ship.orientation}
+            placed={ship.placed}
+            rotateShip={rotateShip}
           />
-        );
-      })}
+        ))}
+      </div>
     </div>
-  </div>
-  
-  <div className="flex flex-row flex-wrap justify-start items-start mt-4">
-    {ships.map((ship) => (
-      <Ship
-        key={ship.id}
-        id={ship.id}
-        size={ship.size}
-        orientation={ship.orientation}
-        placed={ship.placed}
-        rotateShip={rotateShip}
-      />
-    ))}
+
+    {/* Container for Board */}
+    <div className="flex flex-col items-center justify-center">
+      <h1 className="text-2xl font-bold text-center mb-4">Player</h1>
+      <div className="grid grid-cols-10">
+        {board.flat().map((cell, i) => {
+          const x = Math.floor(i / 10);
+          const y = i % 10;
+          return (
+            <Cell
+              key={i}
+              cellId={`${x}-${y}`}
+              onDrop={placeShip}
+              isShipPart={cell !== null}
+              draggedShip={draggedShip}
+              board={board}
+            />
+          );
+        })}
+      </div>
+    </div>
   </div>
 </DndProvider>
 
-
+    </>
   );
 };
 
