@@ -93,8 +93,6 @@ const Board = () => {
     );
   };
 
-  console.log(ships);
-  console.log(board);
 
 
   return (

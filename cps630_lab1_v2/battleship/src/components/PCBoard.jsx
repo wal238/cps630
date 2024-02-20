@@ -16,7 +16,8 @@ const PCBoard = () => {
     setPcShipsRemanining,
     isPcBoardDisabled,
     setIsPcBoardDisabled,
-    pcAttack
+    pcAttack,
+    isGameOver
   } = useGameState();
   const { hits, setHits, misses, setMisses } = useGameState();
 
@@ -56,6 +57,20 @@ const PCBoard = () => {
     setPcShips(shipsData);
   };
 
+  const isCellPartOfSunkShip = (row, col, pcShips) => {
+    // Ship of pcShips is not iterable help implement this function
+    for (const ship of pcShips) {
+      if (ship.sunk) {
+        const isPartOfShip = ship.coordinates.some(coord => coord.row === row && coord.col === col);
+        if (isPartOfShip) {
+          return true;
+        }
+      }
+    }
+    return false;
+  };
+  
+
   const getShipCoordinates = (board, shipId) => {
     let coordinates = [];
     for (let row = 0; row < board.length; row++) {
@@ -68,7 +83,6 @@ const PCBoard = () => {
     return coordinates;
   };
 
-  console.log(pcBoard);
 
   const canPlaceShip = (board, row, col, size, orientation) => {
     if (orientation === "horizontal" && col + size > 10) {
@@ -106,35 +120,47 @@ const PCBoard = () => {
       setAlertMessage("Game has not started yet! Don't attempt to cheat!");
       return;
     }
-
+  
     if (isPcBoardDisabled) {
-        setAlertMessage("PC Board is disabled. Please wait for PC to finish its turn.");
-        return;
+      setAlertMessage("PC Board is disabled. Please wait for PC to finish its turn.");
+      return;
     }
-
+  
     if (pcShipsRemanining === 0) {
-        setAlertMessage("You've already won! Game over!");
-        return;
+      setAlertMessage("You've already won! Game over!");
+      return;
     }
-
+  
     const cell = pcBoard[row][col];
     if (cell === "hit" || cell === "miss") {
       setAlertMessage(`You've already hit this location! ${row}, ${col}`);
       return;
     }
-
-    if (typeof cell === "number") {
-      // A ship is present
-      const updatedBoard = [...pcBoard];
-      updatedBoard[row][col] = "hit";
+  
+    let isHit = false;
+    const updatedBoard = pcBoard.map((r, rowIndex) => 
+      r.map((c, colIndex) => {
+        if (row === rowIndex && col === colIndex) {
+          if (typeof c === "number") {
+            isHit = true;
+            return "hit";
+          } else {
+            return "miss";
+          }
+        }
+        return c;
+      })
+    );
+  
+    setPcBoard(updatedBoard);
+  
+    if (isHit) {
       setAlertMessage("You hit a ship!");
-      setPcBoard(updatedBoard);
       setHits(hits + 1);
-
+  
       const updatedShips = pcShips.map((ship) => {
         if (ship.id === cell) {
           ship.health -= 1;
-          console.log("Ship health: ", ship.health);
           if (ship.health === 0) {
             ship.sunk = true;
             setAlertMessage("You sunk a ship!");
@@ -144,50 +170,50 @@ const PCBoard = () => {
         }
         return ship;
       });
+  
       setPcShips(updatedShips);
     } else {
-      const updatedBoard = [...pcBoard];
-      updatedBoard[row][col] = "miss";
       setAlertMessage("You missed!");
-      setPcBoard(updatedBoard);
       setMisses(misses + 1);
+      setIsPcBoardDisabled(true);
+      pcAttack();
     }
-
-    setIsPcBoardDisabled(true);
-    pcAttack();
   };
+  
 
   useEffect(() => {
     placeShipsRandomly();
-  }, []); // Empty dependency array to run only once on component mount
+  }, [isGameOver]); // Empty dependency array to run only once on component mount
 
-  console.log("Lets take a look at the pcBoard", pcBoard);
-  console.log("Lets take a look at the pcShips", pcShips);
   // Lets recreate and restyle whatever is below make the grid 10x 10 also make the grid cells 35x35x
   return (
     <>
       <h1 className="text-2xl font-bold text-center mb-4">PC Board</h1>
       <div className="grid grid-cols-10">
-        {pcBoard.map((row, rowIndex) => {
-          return row.map((cell, colIndex) => {
-            // Determine cell color based on its state
-            let cellColorClass = "bg-sky-200 hover:bg-sky-100"; // default color for untargeted cell
-            if (cell === "hit") {
-              cellColorClass = "bg-red-500"; // red for hit
-            } else if (cell === "miss") {
-              cellColorClass = "bg-gray-300"; // gray for miss
-            }
+      {pcBoard.map((row, rowIndex) => {
+  return row.map((cell, colIndex) => {
+    let cellColorClass = "bg-sky-200 hover:bg-sky-100"; // Default color
 
-            return (
-              <div
-                key={`${rowIndex}-${colIndex}`}
-                className={`h-8 w-8 cursor-pointer border border-black ${cellColorClass}`}
-                onClick={() => handleCellClick(rowIndex, colIndex)}
-                // Removed inline style to use Tailwind classes
-              ></div>
-            );
-          });
-        })}
+    if (cell === "hit") {
+      cellColorClass = "bg-red-500"; // Hit
+    } else if (cell === "miss") {
+      cellColorClass = "bg-gray-300"; // Miss
+    }
+
+    // Check if the cell is part of a sunk ship
+    if ( pcShips && isCellPartOfSunkShip(rowIndex, colIndex, pcShips)) {
+      cellColorClass = "bg-purple-500"; // Distinct color for sunk ship
+    }
+
+    return (
+      <div
+        key={`${rowIndex}-${colIndex}`}
+        className={`h-8 w-8 cursor-pointer border border-black ${cellColorClass}`}
+        onClick={() => handleCellClick(rowIndex, colIndex)}
+      ></div>
+    );
+  });
+})}
       </div>
     </>
   );

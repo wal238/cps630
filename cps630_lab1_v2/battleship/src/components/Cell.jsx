@@ -14,15 +14,20 @@ const Cell = ({ onDrop, cellId, draggedShip }) => {
     }),
   });
 
-  const { board } = useGameState();
+  const { board, ships } = useGameState();
 
   const [x, y] = cellId.split('-').map(Number);
   const cellValue = board[x][y];
   const isShipPart = cellValue !== null && cellValue !== 'hit' && cellValue !== 'miss';
+  const isSunkShipPart = ships.some(ship => 
+    ship.sunk && ship.position.some(pos => pos[0] === x && pos[1] === y)
+  );
+  
 
-  // Determine cell color based on its status
-  let cellColor = "lightblue";
-  if (isShipPart) {
+  let cellColor = "lightblue"; // Default color
+  if (isSunkShipPart) {
+    cellColor = "purple"; // Distinct color for sunk ship
+  } else if (isShipPart) {
     cellColor = "green"; // Ship part
   } else if (cellValue === 'hit') {
     cellColor = "red"; // Hit

@@ -6,6 +6,7 @@ import { GameStateProvider } from "./GameStateContext";
 import Button from "./components/Button";
 import AlertBox from "./components/AlertBox";
 import Score from "./components/Score";
+import ResetButton from "./components/ResetButton";
 
 function App() {
   return (
@@ -22,6 +23,7 @@ function App() {
         </div>
       </div>
       <Button />
+      <ResetButton />
       
     </GameStateProvider>
   );

@@ -6,6 +6,7 @@ export const useGameState = () => useContext(GameStateContext);
 
 export const GameStateProvider = ({ children }) => {
   const [gameStarted, setGameStarted] = useState(false);
+  const [isGameOver, setIsGameOver] = useState(false);
   const [userTurn, setUserTurn] = useState(true);
   const [ships, setShips] = useState([
     {
@@ -141,6 +142,90 @@ export const GameStateProvider = ({ children }) => {
     setIsPcBoardDisabled(false);
   };
 
+  // Create a resetGame function that resets all the states to their initial values
+  const resetGame = () => {
+    setGameStarted(false);
+    setUserTurn(true);
+    setShips([
+      {
+        id: 2,
+        size: 1,
+        placed: false,
+        orientation: "horizontal",
+        health: 1,
+        position: null,
+        coordinates: [],
+      },
+      {
+        id: 6,
+        size: 1,
+        placed: false,
+        orientation: "horizontal",
+        health: 1,
+        position: null,
+        coordinates: [],
+      },
+      {
+        id: 3,
+        size: 2,
+        placed: false,
+        orientation: "horizontal",
+        health: 2,
+        position: null,
+        coordinates: [],
+      },
+      {
+        id: 4,
+        size: 3,
+        placed: false,
+        orientation: "horizontal",
+        health: 3,
+        position: null,
+        coordinates: [],
+      },
+      {
+        id: 5,
+        size: 3,
+        placed: false,
+        orientation: "horizontal",
+        health: 3,
+        position: null,
+        coordinates: [],
+      },
+      {
+        id: 1,
+        size: 4,
+        placed: false,
+        orientation: "horizontal",
+        health: 4,
+        position: null,
+        coordinates: [],
+      },
+    ]);
+    setBoard(
+      Array(10)
+        .fill()
+        .map(() => Array(10).fill(null))
+    );
+    setUserScore(0);
+    setPcShipsRemanining(6);
+    setHits(0);
+    setMisses(0);
+    setUserShipsRemaining(6);
+    setPcHits(0);
+    setPcMisses(0);
+    setIsPcBoardDisabled(false);
+    setPcBoard(
+      Array(10)
+        .fill()
+        .map(() => Array(10).fill(null))
+    );
+    setPcShips();
+    setAlertMessage(
+      "Welcome to BattleShip! Place your ships on the board. Click the button to start the game."
+    );
+  };
+
   const value = {
     gameStarted,
     setGameStarted,
@@ -172,7 +257,10 @@ export const GameStateProvider = ({ children }) => {
     setPcHits,
     pcMisses,
     setPcMisses,
-    userShipsRemaining
+    userShipsRemaining,
+    isGameOver,
+    setIsGameOver,
+    resetGame
   };
 
   return (

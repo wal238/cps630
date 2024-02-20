@@ -10,8 +10,8 @@ const Ship = ({ id, size, orientation, rotateShip, placed }) => {
     }),
   });
 
-  const width = orientation === 'horizontal' ? size * 40 : 40;
-  const height = orientation === 'horizontal' ? 40 : size * 40;
+  const width = orientation === 'horizontal' ? size * 32 : 32;
+  const height = orientation === 'horizontal' ? 32 : size * 32;
 
   return (
     <div className="relative">
