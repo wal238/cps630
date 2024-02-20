@@ -18,6 +18,7 @@ const PCBoard = () => {
     setIsPcBoardDisabled,
     pcAttack,
     isGameOver,
+    userShipsRemaining
   } = useGameState();
   const { hits, setHits, misses, setMisses } = useGameState();
 
@@ -129,6 +130,10 @@ const PCBoard = () => {
     if (pcShipsRemanining === 0) {
       setAlertMessage("You've already won! Game over!");
       return;
+    }
+
+    if (userShipsRemaining === 0) {
+        return; // Game over
     }
   
     const cell = pcBoard[row][col];
