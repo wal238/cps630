@@ -28,7 +28,7 @@ const Ship = ({ id, size, orientation, rotateShip, placed, position }) => {
       }}
       className="flex justify-center items-center font-bold text-2xl"
     >
-      🚢
+      {size}
     </div>
   </div>
   );

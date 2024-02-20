@@ -99,50 +99,59 @@ export const GameStateProvider = ({ children }) => {
     setGameStarted(true);
   };
 
-  const pcAttack = () => {
-    let attacked = false;
-    while (!attacked) {
-      const x = Math.floor(Math.random() * 10);
-      const y = Math.floor(Math.random() * 10);
-
-      if (board[x][y] !== "hit" && board[x][y] !== "miss") {
-        if (typeof board[x][y] === "number") {
-          // Ship is hit
-          const shipId = board[x][y];
-          board[x][y] = "hit";
-          setPcHits((prev) => prev + 1);
-
-          // Find the ship and decrease its health
-          const updatedShips = ships.map((ship) => {
-            if (ship.id === shipId) {
-              ship.health -= 1;
-              if (ship.health === 0) {
-                ship.sunk = true;
-                setUserShipsRemaining((prev) => prev - 1);
-                // Check if all ships are sunk
-                if (pcShipsRemanining - 1 === 0) {
-                  setAlertMessage("All PC ships have been sunk! You win!");
-                  // Additional logic to handle game end
-                }
-              }
-            }
-            return ship;
-          });
-          setShips(updatedShips);
-        } else {
-          // Miss
-          board[x][y] = "miss";
-          setPcMisses((prev) => prev + 1);
-        }
-        attacked = true;
-      }
+  const pcSingleAttack = () => {
+    const x = Math.floor(Math.random() * 10);
+    const y = Math.floor(Math.random() * 10);
+  
+    // If the cell has already been attacked, try again
+    if (board[x][y] === "hit" || board[x][y] === "miss") {
+      return pcSingleAttack();
     }
-
+  
+    if (typeof board[x][y] === "number") {
+      // Ship is hit
+      const shipId = board[x][y];
+      board[x][y] = "hit";
+      setPcHits((prev) => prev + 1);
+      setAlertMessage("PC Hit your ship!");
+  
+      // Find the ship and decrease its health
+      const updatedShips = ships.map((ship) => {
+        if (ship.id === shipId) {
+          ship.health -= 1;
+          if (ship.health === 0) {
+            ship.sunk = true;
+            setUserShipsRemaining((prev) => prev - 1);
+            // Check if all ships are sunk
+            if (userShipsRemaining - 1 === 0) {
+              setAlertMessage("All your ships have been sunk! PC wins!");
+            }
+          }
+        }
+        return ship;
+      });
+      setShips(updatedShips);
+      return true; // Hit, so PC gets another turn
+    } else {
+      // Miss
+      board[x][y] = "miss";
+      setPcMisses((prev) => prev + 1);
+      return false; // Miss, so PC's turn ends
+    }
+  };
+  
+  const pcAttack = () => {
+    let keepAttacking = true;
+  
+    while (keepAttacking) {
+      keepAttacking = pcSingleAttack();
+    }
+  
     setBoard([...board]);
     setIsPcBoardDisabled(false);
   };
+  
 
-  // Create a resetGame function that resets all the states to their initial values
   const resetGame = () => {
     setGameStarted(false);
     setUserTurn(true);
@@ -225,6 +234,8 @@ export const GameStateProvider = ({ children }) => {
       "Welcome to BattleShip! Place your ships on the board. Click the button to start the game."
     );
   };
+
+  
 
   const value = {
     gameStarted,

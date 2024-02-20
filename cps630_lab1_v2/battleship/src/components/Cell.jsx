@@ -47,8 +47,6 @@ const Cell = ({ onDrop, cellId, draggedShip }) => {
 
   return (
     <div ref={drop} style={cellStyle}>
-      {canDrop && !isOver && "🟩"}
-      {!canDrop && isOver && "🟥"}
     </div>
   );
 };

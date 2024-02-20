@@ -17,7 +17,7 @@ const PCBoard = () => {
     isPcBoardDisabled,
     setIsPcBoardDisabled,
     pcAttack,
-    isGameOver
+    isGameOver,
   } = useGameState();
   const { hits, setHits, misses, setMisses } = useGameState();
 
@@ -183,7 +183,7 @@ const PCBoard = () => {
 
   useEffect(() => {
     placeShipsRandomly();
-  }, [isGameOver]); // Empty dependency array to run only once on component mount
+  }, [gameStarted]); // Empty dependency array to run only once on component mount
 
   // Lets recreate and restyle whatever is below make the grid 10x 10 also make the grid cells 35x35x
   return (
