@@ -1,10 +1,10 @@
 import React from "react";
 import { useDrag } from "react-dnd";
 
-const Ship = ({ id, size, orientation, rotateShip, placed }) => {
+const Ship = ({ id, size, orientation, rotateShip, placed, position }) => {
   const [{ isDragging }, drag] = useDrag({
     type: 'ship',
-    item: { type: 'ship', id, size, orientation, placed },
+    item: { type: 'ship', id, size, orientation, placed, position},
     collect: (monitor) => ({
       isDragging: !!monitor.isDragging(),
     }),

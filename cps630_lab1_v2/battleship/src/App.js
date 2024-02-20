@@ -11,9 +11,9 @@ import ResetButton from "./components/ResetButton";
 function App() {
   return (
     <GameStateProvider>
-       <h1>CPS630 Lab1: Battleship</h1>
-       <AlertBox />
-       <Score />
+      <h1>CPS630 Lab1: Battleship</h1>
+      <AlertBox />
+      <Score />
       <div className="app-container">
         <div className="board-container">
           <Board gameStarted={false} />
@@ -22,9 +22,10 @@ function App() {
           <PCBoard />
         </div>
       </div>
-      <Button />
-      <ResetButton />
-      
+      <div className="flex justify-center space-x-4">
+        <Button />
+        <ResetButton />
+      </div>
     </GameStateProvider>
   );
 }

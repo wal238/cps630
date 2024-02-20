@@ -64,24 +64,30 @@ const Board = () => {
       return;
     }
   
-    // Clear the old position if the ship is being repositioned
-    if (ship.placed) {
-      const oldPosition = ship.position;
-      setBoard((prevBoard) => {
-        const newBoard = prevBoard.map((row) => [...row]);
-        oldPosition.forEach(([x, y]) => {
-          newBoard[x][y] = null;
-        });
-        return newBoard;
-      });
-    }
-  
+    
     // Place the ship at the new position
     setBoard((prevBoard) => {
-      const newBoard = prevBoard.map((row) => [...row]);
+      // Create a deep copy of the board
+      const newBoard = prevBoard.map(row => [...row]);
+
+      console.log(ship);
+  
+      // Clear the old position if the ship is being repositioned
+      if (ship.placed && ship.position) {
+        ship.position.forEach(([x, y]) => {
+          if (newBoard[x] && newBoard[x][y] !== undefined) {
+            newBoard[x][y] = null;
+          }
+        });
+      }
+  
+      // Place the ship at the new position
       newCoordinates.forEach(([x, y]) => {
-        newBoard[x][y] = ship.id;
+        if (newBoard[x] && newBoard[x][y] !== undefined) {
+          newBoard[x][y] = ship.id;
+        }
       });
+  
       return newBoard;
     });
   
@@ -93,7 +99,8 @@ const Board = () => {
     );
   };
 
-
+  console.log(board);
+  console.log(ships);
 
   return (
     <>
@@ -111,6 +118,7 @@ const Board = () => {
             orientation={ship.orientation}
             placed={ship.placed}
             rotateShip={rotateShip}
+            position={ship.position}
           />
         ))}
       </div>
